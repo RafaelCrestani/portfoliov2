@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rafael Nassif — UX/UI Designer</title>
+  <meta name="description" content="Portfólio de Rafael Nassif, UX/UI Designer em José Bonifácio - SP." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400&display=swap" rel="stylesheet" />
+  <!-- Digital Numbers (Stephan Ahlf) não existe no Google Fonts; vem da CDNFonts.
+       Se o CDN cair, o relógio recai na DSEG7 Classic embarcada em fonts/. -->
+  <link href="https://fonts.cdnfonts.com/css/digital-numbers" rel="stylesheet" />
+
+  <!-- O retrato é o centro da hero e tem entrada com tempo fixo. Sem
+       prioridade ele decodifica depois que a animação já acabou e aparece de
+       estalo, em vez de entrar junto com o resto. -->
+  <link rel="preload" as="image" type="image/webp" href="img/face-3D-hero.webp" fetchpriority="high" />
+
+  <!-- O ?v= existe porque sem build não há hash no nome do arquivo, e o
+       servidor estático não manda Cache-Control: o browser guarda CSS e JS
+       por conta própria e passa a servir versão velha. Suba o número a cada
+       alteração publicada. -->
+  <link rel="stylesheet" href="css/tokens.css?v=10" />
+  <link rel="stylesheet" href="css/base.css?v=5" />
+  <link rel="stylesheet" href="css/hero.css?v=10" />
+  <link rel="stylesheet" href="css/about.css?v=17" />
+  <link rel="stylesheet" href="css/experience.css?v=8" />
+  <link rel="stylesheet" href="css/footer.css?v=6" />
+
+  <!-- Prepara a animação antes da pintura. Se o script principal não assumir
+       em 2,5 s, o fail-open remove todo estado oculto automaticamente. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var groups = ["opening", "origem", "transicao"];
+      var prefix = "nassif.about.motion.v3.";
+
+      function failOpen() {
+        groups.forEach(function (group) {
+          root.classList.remove("about-motion-pending--" + group);
+        });
+      }
+
+      window.__aboutMotionFailOpen = failOpen;
+
+      try {
+        if (!("IntersectionObserver" in window)) return;
+
+        var storageOk = true;
+        try {
+          window.sessionStorage.getItem(prefix + "probe");
+        } catch (storageError) {
+          storageOk = false;
+        }
+
+        if (storageOk && window.performance && performance.getEntriesByType) {
+          var navigation = performance.getEntriesByType("navigation")[0];
+          if (navigation && navigation.type === "navigate") {
+            groups.forEach(function (group) {
+              sessionStorage.removeItem(prefix + group);
+            });
+          }
+        }
+
+        groups.forEach(function (group) {
+          var seen = false;
+          if (storageOk) {
+            try {
+              seen = sessionStorage.getItem(prefix + group) === "1";
+            } catch (storageError) {
+              storageOk = false;
+            }
+          }
+          if (!seen) root.classList.add("about-motion-pending--" + group);
+        });
+
+        window.__aboutMotionFailSafe = setTimeout(failOpen, 2500);
+      } catch (error) {
+        failOpen();
+      }
+    })();
+
+    (function () {
+      var root = document.documentElement;
+      var groups = ["opening", "orange", "senai", "boa-vista", "accurate", "soften"];
+      var prefix = "nassif.experience.motion.v1.";
+
+      function failOpen() {
+        groups.forEach(function (group) {
+          root.classList.remove("experience-motion-pending--" + group);
+        });
+      }
+
+      window.__experienceMotionFailOpen = failOpen;
+
+      try {
+        if (!("IntersectionObserver" in window)) return;
+
+        var storageOk = true;
+        try {
+          window.sessionStorage.getItem(prefix + "probe");
+        } catch (storageError) {
+          storageOk = false;
+        }
+
+        if (storageOk && window.performance && performance.getEntriesByType) {
+          var navigation = performance.getEntriesByType("navigation")[0];
+          if (navigation && navigation.type === "navigate") {
+            groups.forEach(function (group) {
+              sessionStorage.removeItem(prefix + group);
+            });
+          }
+        }
+
+        groups.forEach(function (group) {
+          var seen = false;
+          if (storageOk) {
+            try {
+              seen = sessionStorage.getItem(prefix + group) === "1";
+            } catch (storageError) {
+              storageOk = false;
+            }
+          }
+          if (!seen) root.classList.add("experience-motion-pending--" + group);
+        });
+
+        window.__experienceMotionFailSafe = setTimeout(failOpen, 2500);
+      } catch (error) {
+        failOpen();
+      }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="hero" id="topo">
+    <canvas class="hero__kinetic-grid" aria-hidden="true"></canvas>
+
+    <div class="hero__frame">
+      <div class="hero__stage">
+
+        <!-- Cruzetas nos cruzamentos da grade -->
+        <span class="hero__cross" style="--cx: 960px; --cy: 208px" aria-hidden="true">
+          <img src="img/svg/cross-v.svg" alt="" />
+          <img src="img/svg/cross-h.svg" alt="" />
+        </span>
+        <span class="hero__cross" style="--cx: 320px; --cy: 624px" aria-hidden="true">
+          <img src="img/svg/cross-v.svg" alt="" />
+          <img src="img/svg/cross-h.svg" alt="" />
+        </span>
+
+        <!-- Marca -->
+        <h1 class="hero__brand">
+          <img class="hero__logo" src="img/logo.svg" width="327" height="68" alt="Nassif" />
+        </h1>
+        <!-- O texto visível é digitado; o rótulo acessível já traz o destino,
+             para leitor de tela não receber a palavra pela metade. -->
+        <p class="hero__role">
+          <span class="hero__role-text" aria-hidden="true">UX/UI Designer</span>
+          <span class="visually-hidden">Product Designer</span>
+        </p>
+
+        <!-- Retrato -->
+        <div class="hero__portrait">
+          <img src="img/face-3D-hero.webp" width="560" height="560" fetchpriority="high" alt="Retrato 3D de Rafael Nassif" />
+        </div>
+
+        <!-- Localização e hora local -->
+        <p class="hero__meta">
+          <span class="hero__place">José bonifácio - SP</span>
+          <time class="hero__clock" id="hero-clock" datetime="08:37">08:37 AM</time>
+        </p>
+
+        <!-- Marcadores / navegação -->
+        <nav aria-label="Seções">
+          <a class="hero__marker hero__marker--left" href="#sobre" data-editorial-scroll
+             style="--x: 476px; --y: 336px; --w: 244px">
+            <span class="hero__label">Sobre</span>
+            <img class="hero__line" src="img/svg/conn-243.svg" alt="" />
+            <span class="hero__node"></span>
+          </a>
+
+          <a class="hero__marker hero__marker--right" href="#experiencia" data-editorial-scroll
+             style="--x: 720px; --y: 256px; --w: 156px">
+            <span class="hero__node"></span>
+            <img class="hero__line" src="img/svg/conn-157.svg" alt="" />
+            <span class="hero__label">Experiência</span>
+          </a>
+
+          <a class="hero__marker hero__marker--left" href="#contato" data-editorial-scroll
+             style="--x: 512px; --y: 520px; --w: 64px; --gap: 4px">
+            <span class="hero__label">Contato</span>
+            <img class="hero__line" src="img/svg/conn-64.svg" alt="" />
+            <span class="hero__node"></span>
+          </a>
+
+          <a class="hero__marker hero__marker--right" href="#projetos"
+             style="--x: 704px; --y: 540px; --w: 156px">
+            <span class="hero__node"></span>
+            <img class="hero__line" src="img/svg/conn-157.svg" alt="" />
+            <span class="hero__label">Projetos</span>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="about" id="sobre" aria-labelledby="sobre-titulo">
+      <div class="about__opening" data-about-motion-group="opening">
+        <div class="about__opening-inner">
+          <div class="about__meta" data-about-motion-kind="fade">
+            <span>01 / Sobre</span>
+            <span>UX/UI &amp; Product Designer · desde 2020</span>
+          </div>
+
+          <div class="about__opening-layout">
+            <div class="about__metric">
+              <strong data-about-motion-kind="scale" aria-label="mais de 6 anos em produto digital">
+                <span class="about__metric-value" data-about-count aria-hidden="true">6</span><span class="about__metric-plus" aria-hidden="true">+</span>
+              </strong>
+              <span class="about__metric-label" data-about-motion-kind="fade" aria-hidden="true">anos em produto digital</span>
+            </div>
+
+            <div class="about__opening-copy">
+              <h2 id="sobre-titulo" data-about-motion-kind="fade">Projeto entre pessoas, negócio e tecnologia.</h2>
+              <p data-about-motion-kind="fade">Busco equilibrar o que é desejável para usuários com o que é viável para o negócio e possível para os times.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about__story">
+        <aside class="about__rail" aria-label="Trajetória da seção Sobre">
+          <p class="about__rail-title">Trajetória</p>
+
+          <ol class="about__index">
+            <li>
+              <a class="is-active" href="#sobre-origem" data-editorial-scroll aria-current="location">
+                <i aria-hidden="true"></i>
+                Origem
+              </a>
+            </li>
+            <li>
+              <a href="#sobre-transicao" data-editorial-scroll>
+                <i aria-hidden="true"></i>
+                Transição
+              </a>
+            </li>
+          </ol>
+
+          <p class="about__rail-count section-rail-count" aria-hidden="true">
+            <span data-about-rail-count>01</span> / 02
+          </p>
+        </aside>
+
+        <div class="about__chapters">
+          <article class="about__chapter" id="sobre-origem" data-about-chapter data-about-motion-group="origem">
+            <i class="about__chapter-marker" data-about-motion-kind="scale" aria-hidden="true"></i>
+
+            <h3>
+              <span class="about__motion-line" data-about-motion-kind="line"><span>Minha trajetória</span></span>
+              <span class="about__motion-line" data-about-motion-kind="line"><span>começou antes</span></span>
+              <span class="about__motion-line" data-about-motion-kind="line"><span>do Figma.</span></span>
+            </h3>
+
+            <div class="about__chapter-copy">
+              <p class="about__lead" data-about-motion-kind="fade">Antes de atuar com UX, trabalhei como desenvolvedor Java em sistemas corporativos.</p>
+              <p data-about-motion-kind="fade">Essa experiência me ensinou que toda decisão de interface tem consequências reais: regras, arquitetura, esforço de implementação, manutenção e escala. O código deixou de ser minha entrega, mas continua informando a maneira como avalio soluções.</p>
+            </div>
+          </article>
+
+          <article class="about__chapter" id="sobre-transicao" data-about-chapter data-about-motion-group="transicao">
+            <i class="about__chapter-marker" data-about-motion-kind="scale" aria-hidden="true"></i>
+
+            <h3>
+              <span class="about__motion-line" data-about-motion-kind="line"><span>Do sistema para a</span></span>
+              <span class="about__motion-line" data-about-motion-kind="line"><span>experiência completa.</span></span>
+            </h3>
+
+            <div class="about__chapter-copy">
+              <p data-about-motion-kind="fade">Em 2020, migrei para UX/UI e passei a observar o produto por outra perspectiva: não apenas como algo que precisa funcionar, mas como uma experiência que precisa ser compreendida, desejada e sustentada.</p>
+              <p class="about__lead" data-about-motion-kind="fade">Desde então, projeto produtos para telecomunicações, fintechs, educação e consultoria.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="experience" id="experiencia" aria-labelledby="experiencia-titulo">
+      <div class="experience__opening" data-experience-motion-group="opening">
+        <div class="experience__opening-inner">
+          <div class="experience__opening-meta" data-experience-motion-kind="fade">
+            <span>02 / Experiência</span>
+            <span>2018 — hoje</span>
+          </div>
+
+          <h2 class="experience__opening-title" id="experiencia-titulo">
+            <span class="experience__motion-line" data-experience-motion-kind="line"><span>Experiência construída</span></span>
+            <span class="experience__motion-line" data-experience-motion-kind="line"><span>em contextos reais.</span></span>
+          </h2>
+
+          <div class="experience__opening-foot" data-experience-motion-kind="fade">
+            <span>5 passagens profissionais</span>
+            <span>UX/UI · Ensino · Tecnologia</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="experience__story">
+        <aside class="experience__rail" aria-label="Experiência profissional">
+          <p class="experience__rail-title">Experiência</p>
+
+          <ol class="experience__index">
+            <li>
+              <a class="is-active" href="#experiencia-orange-door" data-editorial-scroll aria-current="location">
+                <i aria-hidden="true"></i>
+                Orange Door
+              </a>
+            </li>
+            <li>
+              <a href="#experiencia-senai" data-editorial-scroll>
+                <i aria-hidden="true"></i>
+                SENAI
+              </a>
+            </li>
+            <li>
+              <a href="#experiencia-boa-vista" data-editorial-scroll>
+                <i aria-hidden="true"></i>
+                Boa Vista
+              </a>
+            </li>
+            <li>
+              <a href="#experiencia-accurate" data-editorial-scroll>
+                <i aria-hidden="true"></i>
+                Accurate
+              </a>
+            </li>
+            <li>
+              <a href="#experiencia-soften" data-editorial-scroll>
+                <i aria-hidden="true"></i>
+                Soften
+              </a>
+            </li>
+          </ol>
+
+          <p class="experience__rail-count section-rail-count" aria-hidden="true">
+            <span data-experience-count>01</span> / 05
+          </p>
+        </aside>
+
+        <div class="experience__mobile-progress" aria-hidden="true">
+          <span>Experiência</span>
+          <span><b data-experience-mobile-count>01</b> / 05</span>
+          <i></i>
+        </div>
+
+        <div class="experience__chapters">
+          <article class="experience__chapter experience__chapter--primary" id="experiencia-orange-door" data-experience-chapter data-experience-motion-group="orange">
+            <div class="experience__chapter-inner">
+              <div class="experience__chapter-meta" data-experience-motion-kind="fade">
+                <span>Orange Door IT</span>
+                <span>abr 2025 — hoje</span>
+              </div>
+
+              <h3 class="experience__role">
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>UX/UI</span></span>
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Designer.</span></span>
+              </h3>
+
+              <div class="experience__details">
+                <div class="experience__narrative">
+                  <p class="experience__summary" data-experience-motion-kind="fade">Atuo no design de interfaces e protótipos ao longo do ciclo de produto, do entendimento do problema ao handoff e à evolução. Minha prática reúne Design Systems, testes de usabilidade, DesignOps e métodos ágeis.</p>
+                </div>
+                <ul class="experience__tags" data-experience-motion-kind="tags" aria-label="Competências na Orange Door IT">
+                  <li>Design System</li><li>Testes de usabilidade</li><li>DesignOps</li><li>Métodos ágeis</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="experience__chapter experience__chapter--compact" id="experiencia-senai" data-experience-chapter data-experience-motion-group="senai">
+            <div class="experience__chapter-inner">
+              <div class="experience__chapter-meta" data-experience-motion-kind="fade">
+                <span>SENAI São Paulo</span>
+                <span>set 2023 — abr 2025</span>
+              </div>
+
+              <h3 class="experience__role">
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Instrutor —</span></span>
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Técnico em Multimídia.</span></span>
+              </h3>
+
+              <div class="experience__details">
+                <div class="experience__narrative">
+                  <p class="experience__summary" data-experience-motion-kind="fade">Planejei e conduzi aulas de Design, UX/UI e Front-end, traduzindo conceitos em projetos práticos. Por meio de metodologias ativas, acompanhei a formação dos alunos durante o processo de aprendizagem.</p>
+                </div>
+                <ul class="experience__tags" data-experience-motion-kind="tags" aria-label="Competências no SENAI São Paulo">
+                  <li>Educação</li><li>UX/UI</li><li>Front-end</li><li>Metodologias ativas</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="experience__chapter experience__chapter--primary" id="experiencia-boa-vista" data-experience-chapter data-experience-motion-group="boa-vista">
+            <div class="experience__chapter-inner">
+              <div class="experience__chapter-meta" data-experience-motion-kind="fade">
+                <span>Boa Vista SCPC</span>
+                <span>set 2022 — mar 2023</span>
+              </div>
+
+              <h3 class="experience__role">
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>UX/UI</span></span>
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Designer.</span></span>
+              </h3>
+
+              <div class="experience__details">
+                <div class="experience__narrative">
+                  <p class="experience__summary" data-experience-motion-kind="fade">Atuei no desenho de uma nova jornada digital de recuperação de crédito para usuários inadimplentes. O trabalho utilizou dados para orientar decisões e estruturar a experiência em um contexto sensível.</p>
+                </div>
+                <ul class="experience__tags" data-experience-motion-kind="tags" aria-label="Competências na Boa Vista SCPC">
+                  <li>Fintech</li><li>Jornada digital</li><li>Recuperação de crédito</li><li>Data-driven</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="experience__chapter experience__chapter--primary" id="experiencia-accurate" data-experience-chapter data-experience-motion-group="accurate">
+            <div class="experience__chapter-inner">
+              <div class="experience__chapter-meta" data-experience-motion-kind="fade">
+                <span>Accurate Software</span>
+                <span>set 2020 — set 2022</span>
+              </div>
+
+              <h3 class="experience__role">
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>UX/UI</span></span>
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Designer.</span></span>
+              </h3>
+
+              <div class="experience__details">
+                <div class="experience__narrative">
+                  <p class="experience__summary" data-experience-motion-kind="fade">Atuei em produtos de diferentes setores, conectando necessidades de negócio a experiências digitais. Trabalhei em soluções para Claro Brasil, Rodobens/RNI e em um aplicativo de gestão interna.</p>
+                </div>
+                <ul class="experience__tags" data-experience-motion-kind="tags" aria-label="Competências na Accurate Software">
+                  <li>Telecomunicações</li><li>Produtos digitais</li><li>Aplicativos</li><li>Consultoria</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="experience__chapter experience__chapter--compact" id="experiencia-soften" data-experience-chapter data-experience-motion-group="soften">
+            <div class="experience__chapter-inner">
+              <div class="experience__chapter-meta" data-experience-motion-kind="fade">
+                <span>Soften Sistemas</span>
+                <span>jun 2018 — ago 2020</span>
+              </div>
+
+              <h3 class="experience__role">
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Desenvolvedor</span></span>
+                <span class="experience__motion-line" data-experience-motion-kind="line"><span>Java.</span></span>
+              </h3>
+
+              <div class="experience__details">
+                <div class="experience__narrative">
+                  <p class="experience__summary" data-experience-motion-kind="fade">Desenvolvi e mantive sistemas ERP com Java, SQL Server, HTML e CSS. Essa experiência consolidou minha base técnica e ainda informa como avalio regras, arquitetura, manutenção e viabilidade nas decisões de produto.</p>
+                </div>
+                <ul class="experience__tags" data-experience-motion-kind="tags" aria-label="Competências na Soften Sistemas">
+                  <li>Java</li><li>SQL Server</li><li>ERP</li><li>Web</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-contact" id="contato" aria-labelledby="contato-titulo">
+    <a class="footer-contact__skip" href="#contato-acoes" data-footer-skip>
+      Pular animação e acessar contatos
+    </a>
+
+    <div class="footer-contact__scene" data-footer-scene>
+      <div class="footer-contact__stage" data-footer-stage>
+        <div class="footer-contact__panel" data-footer-panel>
+          <div class="footer-contact__meta" aria-hidden="true">
+            <span>04 / Contato</span>
+            <span>Rafael Nassif · Product Designer</span>
+          </div>
+
+          <div class="footer-contact__track" data-footer-track>
+            <h2 class="footer-contact__prompt" id="contato-titulo">
+              <span>Vamos</span>
+              <em>conversar?</em>
+            </h2>
+          </div>
+
+          <div class="footer-contact__reveal" data-footer-reveal>
+            <p class="footer-contact__copy" data-footer-copy>
+              Tem um projeto, desafio de produto ou oportunidade em mente? Me conte o contexto.
+            </p>
+
+            <nav class="footer-contact__actions" id="contato-acoes" data-footer-actions aria-label="Canais de contato" tabindex="-1">
+              <a class="footer-contact__button footer-contact__button--primary" href="mailto:rafael.nassifcrestani@gmail.com">
+                <span>Enviar um e-mail</span><b aria-hidden="true">↗</b>
+              </a>
+              <a class="footer-contact__button" href="https://www.linkedin.com/in/rafael-nassif-crestani/" target="_blank" rel="noopener noreferrer">
+                <span>LinkedIn</span><b aria-hidden="true">↗</b>
+              </a>
+              <a class="footer-contact__button" href="https://www.behance.net/rafaelnassif1" target="_blank" rel="noopener noreferrer">
+                <span>Behance</span><b aria-hidden="true">↗</b>
+              </a>
+              <a class="footer-contact__button" href="https://wa.me/5517991806999" target="_blank" rel="noopener noreferrer">
+                <span>WhatsApp</span><b aria-hidden="true">↗</b>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-contact__signature">
+      <div class="footer-contact__signature-inner">
+        <img class="footer-contact__logo" src="img/logo.svg" width="327" height="68" alt="Nassif" />
+
+        <div class="footer-contact__legal">
+          <a href="#topo" data-editorial-scroll data-scroll-instant-reduced>Voltar ao topo ↑</a>
+          <p>© 2026 Rafael Nassif Crestani<br />Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/kinetic-grid.js?v=3"></script>
+  <script src="js/hero.js?v=6"></script>
+  <script src="js/editorial-scroll.js?v=2"></script>
+  <script src="js/about.js?v=7"></script>
+  <script src="js/experience.js?v=1"></script>
+  <script src="vendor/gsap/gsap.min.js?v=3.15.0"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js?v=3.15.0"></script>
+  <script src="js/footer.js?v=7"></script>
+</body>
+</html>

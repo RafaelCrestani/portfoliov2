@@ -1,0 +1,650 @@
+/* ==========================================================================
+   NASSIF — Hero
+   Palco editorial de 1280 × 832 sobre uma Kinetic Grid independente.
+   Todo posicionamento do conteúdo é múltiplo de 4 px; abaixo de 1024 px a
+   composição responsiva assume dimensões reais, sem escalar a interface.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--hero-bg);
+}
+
+.hero__kinetic-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero__frame {
+  position: relative;
+  z-index: 1;
+  width: min(100%, var(--layout-max));
+  height: calc(var(--hero-h) * var(--stage-scale, 1));
+  margin-inline: auto;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.hero__stage {
+  position: relative;
+  width: var(--hero-w);
+  height: var(--hero-h);
+  transform: scale(var(--stage-scale, 1));
+  transform-origin: top left;
+}
+
+/* --- Cruzetas da composição ------------------------------------------------ */
+
+.hero__cross {
+  position: absolute;
+  left: var(--cross-x, var(--cx));
+  top: var(--cross-y, var(--cy));
+  width: 0;
+  height: 0;
+}
+
+.hero__cross img {
+  position: absolute;
+  left: calc(var(--cross-weight) / -2);
+  top: calc(var(--cross-arm) / -2);
+  width: var(--cross-weight);
+  height: var(--cross-arm);
+}
+
+.hero__cross img + img {
+  transform: rotate(90deg);
+  transform-origin: calc(var(--cross-weight) / 2) calc(var(--cross-arm) / 2);
+}
+
+/* --- Marca ---------------------------------------------------------------- */
+
+.hero__brand {
+  position: absolute;
+  left: var(--space-16); /* 64 */
+  top: var(--space-24);  /* 96 */
+  margin: 0;
+  line-height: 0;
+}
+
+.hero__logo {
+  width: 328px;
+  height: auto;
+}
+
+.hero__role {
+  position: absolute;
+  left: var(--space-16); /* 64 */
+  top: var(--space-48);  /* 192 */
+  height: var(--text-lg-lh); /* trava a caixa: com a linha vazia ela iria a 0 */
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 400;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* O cursor fica absoluto ancorado no fim do texto, fora do fluxo, para a
+   digitação não empurrar nada. Ele pende do próprio <p>, que é absoluto e
+   portanto tem largura shrink-to-fit igual à do texto — e não do <span>,
+   cuja caixa colapsa para altura 0 no instante em que a linha fica vazia,
+   fazendo o cursor saltar. Por isso também a altura fixa acima. */
+.hero__role.is-typing::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 2px;
+  height: 20px;
+  margin-left: 2px;
+  transform: translateY(-50%);
+  background: currentColor;
+  animation: nassif-caret 900ms steps(1, end) infinite;
+}
+
+@keyframes nassif-caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* --- Retrato -------------------------------------------------------------- */
+
+.hero__portrait {
+  position: absolute;
+  left: calc((var(--hero-w) - 560px) / 2); /* 360 */
+  top: var(--space-34);                    /* 136 */
+  width: 560px;
+  height: 560px;
+  pointer-events: none;
+}
+
+.hero__portrait img {
+  display: block;
+  width: 560px;
+  height: 560px;
+  object-fit: cover;
+}
+
+/* --- Localização + relógio ------------------------------------------------ */
+
+.hero__meta {
+  position: absolute;
+  right: var(--space-14); /* 56 */
+  top: var(--space-8);    /* 32 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.hero__place {
+  font-family: var(--font-sans);
+  font-size: var(--type-meta-lg-size);
+  line-height: var(--type-meta-lg-lh);
+  font-weight: 400;
+  color: #353535;
+  white-space: nowrap;
+}
+
+.hero__clock {
+  font-family: var(--font-seven-seg);
+  font-size: var(--type-clock-size);
+  line-height: var(--type-clock-lh);
+  color: #000000;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Marcadores ------------------------------------------------------------
+   Cada marcador é ancorado pelo quadrado de 48x48.
+   O conector sai do centro do quadrado e desce --marker-drop (20px) até o
+   centro vertical do label; o label fica a --marker-gap (8px) do conector.
+   -------------------------------------------------------------------------- */
+
+.hero__marker {
+  position: absolute;
+  left: var(--marker-x, var(--x));
+  top: var(--marker-y, var(--y));
+  width: var(--marker-size);
+  height: var(--marker-size);
+}
+
+.hero__node {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Duas camadas: o véu do vidro por cima do fill original do Figma. */
+  --veil: var(--marker-veil);
+  background-color: var(--marker-fill);
+  background-image: linear-gradient(var(--veil), var(--veil));
+  -webkit-backdrop-filter: var(--marker-glass);
+  backdrop-filter: var(--marker-glass);
+  border: var(--marker-stroke) solid var(--color-text);
+}
+
+.hero__node::after {
+  content: "";
+  width: var(--marker-core);
+  height: var(--marker-core);
+  background: var(--color-text);
+}
+
+.hero__line {
+  position: absolute;
+  width: var(--marker-line-width, var(--w));
+  height: var(--marker-drop);
+}
+
+.hero__label {
+  position: absolute;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 400;
+  color: var(--color-text);
+  white-space: nowrap;
+  transition: color 160ms ease;
+}
+
+/* Label à esquerda: conector encosta na borda esquerda do quadrado, desce
+   da altura do label até o centro do quadrado. */
+.hero__marker--left .hero__line {
+  right: 100%;
+  top: calc(50% - var(--marker-drop));
+}
+
+.hero__marker--left .hero__label {
+  right: calc(100% + var(--marker-line-width, var(--w)) + var(--gap, var(--marker-gap)));
+  top: calc(50% - var(--marker-drop));
+}
+
+/* Label à direita: conector sai do centro do quadrado e desce até o label. */
+.hero__marker--right .hero__line {
+  left: 100%;
+  top: 50%;
+}
+
+/* O -4px é correção óptica: em Bruno Ace as maiúsculas ficam altas na caixa,
+   então o conector precisa mirar acima do centro geométrico do label. */
+.hero__marker--right .hero__label {
+  left: calc(100% + var(--marker-line-width, var(--w)) + var(--gap, var(--marker-gap)));
+  top: calc(50% + var(--marker-drop) - 4px);
+}
+
+/* Estado. A área sensível continua sendo o marcador inteiro — quadrado,
+   conector e texto — mas o acento aparece só na palavra: o quadrado e o
+   miolo ficam parados sobre o rosto. */
+.hero__marker:hover .hero__label,
+.hero__marker:focus-visible .hero__label {
+  color: var(--color-accent);
+}
+
+.hero__marker:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* --- Entrada ---------------------------------------------------------------
+   A hero se monta na ordem em que o desenho se lê: malha, marca, rosto, e só
+   então cada marcador — quadrado, conector desenhando a partir dele, rótulo.
+
+   Só opacity, transform e clip-path, para tudo rodar no compositor. Cuidado:
+   .hero__label e as cruzetas já carregam transform próprio (translateY e
+   rotate), então nesses eu animo só a opacidade — um transform de entrada
+   apagaria o que já estava lá.
+
+   Sem guarda de prefers-reduced-motion, pelo mesmo motivo da piscada: o
+   Windows do Rafael reporta reduced-motion e o efeito nunca apareceria para
+   quem pediu por ele. Para desligar, apague este bloco.
+   -------------------------------------------------------------------------- */
+
+@keyframes nassif-enter-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes nassif-enter-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes nassif-enter-portrait {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes nassif-enter-pop {
+  from { opacity: 0; transform: scale(0.55); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Conector nasce no quadrado e corre até o rótulo — por isso o sentido do
+   traço muda conforme o lado em que o rótulo está. */
+@keyframes nassif-enter-draw-ltr {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes nassif-enter-draw-rtl {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.hero__kinetic-grid {
+  animation: nassif-enter-fade 700ms var(--enter-ease) both;
+}
+
+.hero__brand {
+  animation: nassif-enter-up var(--enter-dur) var(--enter-ease) 200ms both;
+}
+
+.hero__role {
+  animation: nassif-enter-up var(--enter-dur) var(--enter-ease) 300ms both;
+}
+
+.hero__portrait {
+  animation: nassif-enter-portrait 760ms var(--enter-ease) 240ms both;
+}
+
+.hero__cross {
+  animation: nassif-enter-fade var(--enter-dur) var(--enter-ease) 620ms both;
+}
+
+.hero__meta {
+  animation: nassif-enter-up var(--enter-dur) var(--enter-ease) 860ms both;
+}
+
+.hero__marker:nth-child(1) { --enter-delay: 540ms; }
+.hero__marker:nth-child(2) { --enter-delay: 630ms; }
+.hero__marker:nth-child(3) { --enter-delay: 720ms; }
+.hero__marker:nth-child(4) { --enter-delay: 810ms; }
+
+.hero__node {
+  animation: nassif-enter-pop var(--enter-dur) var(--enter-ease)
+             var(--enter-delay, 540ms) both;
+}
+
+.hero__line {
+  animation: nassif-enter-draw-ltr 380ms var(--enter-ease)
+             calc(var(--enter-delay, 540ms) + 140ms) both;
+}
+
+.hero__marker--left .hero__line {
+  animation-name: nassif-enter-draw-rtl;
+}
+
+.hero__label {
+  animation: nassif-enter-fade var(--enter-dur) var(--enter-ease)
+             calc(var(--enter-delay, 540ms) + 300ms) both;
+}
+
+/* Sem backdrop-filter o quadrado ficaria só transparente sobre o rosto —
+   aqui o véu opaco é o que segura a leitura do marcador. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hero__node {
+    --veil: rgba(248, 247, 245, 0.55);
+  }
+}
+
+/* --- Responsivo -----------------------------------------------------------
+   Abaixo de 1024px o conteúdo deixa de ser uma miniatura do palco desktop.
+   A malha continua cobrindo a viewport, mas marca, rosto e navegação passam a
+   usar dimensões reais e alvos de toque adequados. */
+@media (max-width: 1023px) {
+  .hero {
+    --mobile-safe-top: max(20px, env(safe-area-inset-top));
+    --mobile-safe-left: max(16px, env(safe-area-inset-left));
+    --mobile-safe-right: max(16px, env(safe-area-inset-right));
+    --mobile-portrait: clamp(240px, 72vw, 360px);
+    --mobile-portrait-offset: clamp(-180px, -36vw, -120px);
+    --marker-size: 48px;
+    --marker-core: 18px;
+    --marker-drop: 12px;
+    --marker-gap: 8px;
+
+    align-items: stretch;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .hero__frame {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    flex: 1 1 auto;
+  }
+
+  .hero__stage {
+    width: 100%;
+    height: 100%;
+    transform: none;
+  }
+
+  .hero__brand {
+    left: var(--mobile-safe-left);
+    top: var(--mobile-safe-top);
+  }
+
+  .hero__logo {
+    width: clamp(152px, 44vw, 176px);
+  }
+
+  .hero__role {
+    left: var(--mobile-safe-left);
+    top: calc(var(--mobile-safe-top) + 44px);
+    height: var(--type-hero-nav-lh);
+    font-size: var(--type-hero-nav-size);
+    line-height: var(--type-hero-nav-lh);
+  }
+
+  .hero__role.is-typing::after {
+    height: 16px;
+  }
+
+  .hero__meta {
+    right: var(--mobile-safe-right);
+    top: var(--mobile-safe-top);
+    gap: 4px;
+  }
+
+  .hero__place {
+    font-size: var(--type-meta-lg-size);
+    line-height: var(--type-meta-lg-lh);
+  }
+
+  .hero__clock {
+    font-size: var(--type-clock-size);
+    line-height: var(--type-clock-lh);
+  }
+
+  .hero__portrait {
+    left: 50%;
+    top: 52%;
+    width: var(--mobile-portrait);
+    height: var(--mobile-portrait);
+    margin-left: var(--mobile-portrait-offset);
+    margin-top: var(--mobile-portrait-offset);
+  }
+
+  .hero__portrait img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__cross:first-of-type {
+    --cross-x: 75%;
+    --cross-y: var(--cross-a-y, 32.5vw);
+  }
+
+  .hero__cross:nth-of-type(2) {
+    --cross-x: 25%;
+    --cross-y: var(--cross-b-y, 75svh);
+  }
+
+  .hero__marker {
+    --marker-line-width: clamp(12px, 4vw, 24px);
+  }
+
+  .hero__marker:nth-child(1) {
+    --marker-x: calc(50% - clamp(70px, 21vw, 104px) - 24px);
+    --marker-y: calc(47% - 24px);
+  }
+
+  .hero__marker:nth-child(2) {
+    --marker-x: calc(50% + clamp(30px, 10vw, 54px) - 24px);
+    --marker-y: calc(42% - 24px);
+  }
+
+  .hero__marker:nth-child(3) {
+    --marker-x: calc(50% - clamp(52px, 16vw, 84px) - 24px);
+    --marker-y: calc(59% - 24px);
+  }
+
+  .hero__marker:nth-child(4) {
+    --marker-x: calc(50% + clamp(26px, 8vw, 48px) - 24px);
+    --marker-y: calc(60% - 24px);
+  }
+
+  .hero__node {
+    inset: 6px;
+  }
+
+  .hero__node::after {
+    width: var(--marker-core);
+    height: var(--marker-core);
+  }
+
+  .hero__line {
+    height: var(--marker-drop);
+  }
+
+  .hero__label {
+    font-size: var(--type-hero-nav-size);
+    line-height: var(--type-hero-nav-lh);
+  }
+
+  .hero__marker--left .hero__line {
+    right: calc(100% - 6px);
+  }
+
+  .hero__marker--left .hero__label {
+    right: calc(100% + var(--marker-line-width) + var(--gap, var(--marker-gap)) - 6px);
+  }
+
+  .hero__marker--right .hero__line {
+    left: calc(100% - 6px);
+  }
+
+  .hero__marker--right .hero__label {
+    left: calc(100% + var(--marker-line-width) + var(--gap, var(--marker-gap)) - 6px);
+  }
+}
+
+/* Paisagem baixa: a altura passa a comandar o rosto e as conexões. */
+@media (max-width: 1023px) and (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    --mobile-safe-top: max(16px, env(safe-area-inset-top));
+    --mobile-portrait: clamp(190px, 65svh, 250px);
+    --mobile-portrait-offset: clamp(-125px, -32.5svh, -95px);
+    --marker-core: 16px;
+    --marker-drop: 10px;
+  }
+
+  .hero__logo {
+    width: clamp(144px, 22vw, 184px);
+  }
+
+  .hero__role {
+    top: calc(var(--mobile-safe-top) + 48px);
+    height: var(--type-hero-nav-lh);
+    font-size: var(--type-hero-nav-size);
+    line-height: var(--type-hero-nav-lh);
+  }
+
+  .hero__role.is-typing::after {
+    height: 14px;
+  }
+
+  .hero__place,
+  .hero__clock {
+    font-size: var(--type-meta-lg-size);
+    line-height: var(--type-meta-lg-lh);
+  }
+
+  .hero__clock {
+    font-size: var(--type-clock-size);
+    line-height: var(--type-clock-lh);
+  }
+
+  .hero__portrait {
+    top: 50%;
+  }
+
+  .hero__marker {
+    --marker-line-width: clamp(16px, 3vw, 24px);
+  }
+
+  .hero__marker:nth-child(1) {
+    --marker-x: calc(50% - clamp(70px, 12vw, 90px) - 24px);
+    --marker-y: calc(45% - 24px);
+  }
+
+  .hero__marker:nth-child(2) {
+    --marker-x: calc(50% + clamp(30px, 6vw, 50px) - 24px);
+    --marker-y: calc(34% - 24px);
+  }
+
+  .hero__marker:nth-child(3) {
+    --marker-x: calc(50% - clamp(52px, 10vw, 75px) - 24px);
+    --marker-y: calc(70% - 24px);
+  }
+
+  .hero__marker:nth-child(4) {
+    --marker-x: calc(50% + clamp(26px, 5vw, 42px) - 24px);
+    --marker-y: calc(72% - 24px);
+  }
+
+  .hero__node {
+    inset: 8px;
+  }
+
+  .hero__label {
+    font-size: var(--type-hero-nav-size);
+    line-height: var(--type-hero-nav-lh);
+  }
+
+  .hero__marker--left .hero__line {
+    right: calc(100% - 8px);
+  }
+
+  .hero__marker--left .hero__label {
+    right: calc(100% + var(--marker-line-width) + var(--gap, var(--marker-gap)) - 8px);
+  }
+
+  .hero__marker--right .hero__line {
+    left: calc(100% - 8px);
+  }
+
+  .hero__marker--right .hero__label {
+    left: calc(100% + var(--marker-line-width) + var(--gap, var(--marker-gap)) - 8px);
+  }
+}
+
+/* Telefones estreitos: encurta as conexões e traz os dois pontos superiores
+   para dentro, preservando 16px de respiro para todos os nomes. */
+@media (max-width: 480px) and (orientation: portrait) {
+  .hero__marker {
+    --marker-line-width: 8px;
+    --marker-gap: 4px;
+  }
+
+  .hero__marker:nth-child(1) {
+    --marker-x: calc(
+      50% - clamp(70px, 21vw, 104px) - 24px
+      + clamp(0px, calc(138px - 37.5vw), 18px)
+    );
+  }
+
+  .hero__marker:nth-child(2) {
+    --marker-x: calc(
+      50% + clamp(5px, calc(42.86vw - 132.15px), 47px) - 24px
+    );
+  }
+
+  .hero__marker:nth-child(3) {
+    --marker-x: calc(
+      50% - clamp(52px, 16vw, 84px) - 24px
+      + clamp(0px, calc(138px - 37.5vw), 18px)
+    );
+  }
+}
+
+@media (max-width: 340px) and (orientation: portrait) {
+  .hero__logo {
+    width: 136px;
+  }
+}

@@ -1,0 +1,19 @@
+# Local tooling and prototypes
+.claude/
+.superpowers/
+
+# Internal working documents and raw portfolio notes
+docs/superpowers/
+dados-portfolio-rafael-nassif.md
+
+# Dependencies and local environment
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Logs and operating-system files
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini

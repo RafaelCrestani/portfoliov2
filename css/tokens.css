@@ -1,0 +1,222 @@
+/* ==========================================================================
+   NASSIF — tokens
+   Cores: "Guia de estilo/Colors.png"
+   Espaçamento e tipografia: grade de 4pt (todo valor é múltiplo de 4)
+   ========================================================================== */
+
+:root {
+  /* --- Cores base ------------------------------------------------------- */
+  --color-background: #f8f7f5;
+  --color-surface: #ffffff;
+  --color-border: #e7e5e4;
+  --color-text: #18181b;
+  --color-secondary: #71717a;
+  --color-accent: #d22010;
+
+  /* --- Escala de cinza -------------------------------------------------- */
+  --gray-50: #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-200: #e4e4e7;
+  --gray-300: #d4d4d8;
+  --gray-400: #a1a1aa;
+  --gray-500: #71717a;
+  --gray-600: #52525b;
+  --gray-700: #3f3f46;
+  --gray-800: #27272a;
+  --gray-900: #18181b;
+
+  /* --- Grade de 4pt ----------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-34: 136px;
+  --space-48: 192px;
+
+  /* --- Tipografia (tamanhos e entrelinhas em múltiplos de 4) ------------ */
+  --font-display: "Bruno Ace", "Satoshi", system-ui, sans-serif;
+  --font-sans: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* "Digital Numbers" (Stephan Ahlf) é a fonte do Figma — não está no Google
+     Fonts; vem via CDNFonts, carregada no <head>. DSEG7 Classic (OFL, em
+     fonts/) é o fallback embarcado caso o CDN não responda. */
+  --font-seven-seg: "Digital Numbers", "DSEG7 Classic", ui-monospace, monospace;
+
+  /* Escala semântica desktop. Todos os valores são múltiplos de 4px. */
+  --type-display-metric-size: 320px;
+  --type-display-metric-lh: 240px;
+  --type-h1-size: 96px;
+  --type-h1-lh: 88px;
+  --type-h2-size: 72px;
+  --type-h2-lh: 68px;
+  --type-h3-size: 64px;
+  --type-h3-lh: 64px;
+  --type-role-size: 96px;
+  --type-role-lh: 80px;
+  --type-role-long-size: 72px;
+  --type-role-long-lh: 64px;
+  --type-lead-size: 32px;
+  --type-lead-lh: 40px;
+  --type-body-lg-size: 24px;
+  --type-body-lg-lh: 32px;
+  --type-body-size: 20px;
+  --type-body-lh: 28px;
+  --type-body-sm-size: 16px;
+  --type-body-sm-lh: 24px;
+  --type-hero-nav-size: 24px;
+  --type-hero-nav-lh: 28px;
+  --type-meta-lg-size: 20px;
+  --type-meta-lg-lh: 28px;
+  --type-nav-size: 12px;
+  --type-nav-lh: 16px;
+  --type-meta-size: 12px;
+  --type-meta-lh: 16px;
+  --type-tag-size: 12px;
+  --type-tag-lh: 16px;
+  --type-clock-size: 16px;
+  --type-clock-lh: 20px;
+
+  /* Compatibilidade com os componentes globais já existentes. */
+  --text-sm: var(--type-body-sm-size);
+  --text-sm-lh: var(--type-body-sm-lh);
+  --text-md: var(--type-body-size);
+  --text-md-lh: var(--type-body-lh);
+  --text-lg: var(--type-hero-nav-size);
+  --text-lg-lh: var(--type-hero-nav-lh);
+
+  /* --- Hero e Kinetic Grid --------------------------------------------- */
+  --layout-max: 1280px; /* max width do projeto */
+  --hero-w: 1280px;
+  --hero-h: 832px;
+
+  --hero-grid-line: rgba(24, 24, 27, 0.12);
+  --hero-bg: #f4f4f4;
+  --kinetic-grid-module: 64px;
+  --kinetic-grid-module-responsive: 48px;
+  --kinetic-warp-radius: 192px;
+  --kinetic-warp-force: 16px;
+  --kinetic-ripple-duration: 1200ms;
+  --kinetic-ripple-speed: 320;
+  --kinetic-ripple-max-radius: 384px;
+  --kinetic-ripple-amplitude: 12px;
+  --kinetic-ripple-half-width: 64px;
+
+  --marker-size: 48px;
+  --marker-core: 24px;
+  --marker-drop: 20px; /* desnível vertical do conector */
+  --marker-gap: 8px;   /* respiro entre conector e label */
+  --marker-fill: rgba(210, 32, 16, 0.01); /* valor do Figma */
+  --marker-stroke: 2px;
+
+  /* Vidro do marcador: desfoca de leve o retrato 3D que passa por trás.
+     O véu branco é o que faz o desfoque virar vidro em vez de borrão. */
+  --marker-glass: blur(8px) saturate(1.08);
+  --marker-veil: rgba(255, 255, 255, 0.12);
+
+  --cross-arm: 24px;
+  --cross-weight: 3px;
+
+  /* Entrada da hero. O atraso de CARGO.esperaInicial no JS está calibrado
+     para começar depois disto. */
+  --enter-dur: 520ms;
+  --enter-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --type-display-metric-size: 220px;
+    --type-display-metric-lh: 164px;
+    --type-h1-size: 72px;
+    --type-h1-lh: 68px;
+    --type-h2-size: 56px;
+    --type-h2-lh: 56px;
+    --type-h3-size: 52px;
+    --type-h3-lh: 52px;
+    --type-role-size: 72px;
+    --type-role-lh: 64px;
+    --type-role-long-size: 56px;
+    --type-role-long-lh: 52px;
+    --type-lead-size: 24px;
+    --type-lead-lh: 32px;
+    --type-body-lg-size: 20px;
+    --type-body-lg-lh: 28px;
+    --type-body-size: 20px;
+    --type-body-lh: 28px;
+    --type-body-sm-size: 16px;
+    --type-body-sm-lh: 24px;
+    --type-hero-nav-size: 20px;
+    --type-hero-nav-lh: 24px;
+    --type-meta-lg-size: 16px;
+    --type-meta-lg-lh: 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --type-display-metric-size: 160px;
+    --type-display-metric-lh: 120px;
+    --type-h1-size: 48px;
+    --type-h1-lh: 52px;
+    --type-h2-size: 40px;
+    --type-h2-lh: 44px;
+    --type-h3-size: 40px;
+    --type-h3-lh: 44px;
+    --type-role-size: 48px;
+    --type-role-lh: 48px;
+    --type-role-long-size: 40px;
+    --type-role-long-lh: 44px;
+    --type-lead-size: 20px;
+    --type-lead-lh: 28px;
+    --type-body-lg-size: 20px;
+    --type-body-lg-lh: 28px;
+    --type-body-size: 16px;
+    --type-body-lh: 24px;
+    --type-body-sm-size: 16px;
+    --type-body-sm-lh: 24px;
+    --type-hero-nav-size: 16px;
+    --type-hero-nav-lh: 20px;
+    --type-meta-lg-size: 16px;
+    --type-meta-lg-lh: 20px;
+    --type-nav-size: 16px;
+    --type-nav-lh: 20px;
+    --type-meta-size: 16px;
+    --type-meta-lh: 20px;
+    --type-tag-size: 16px;
+    --type-tag-lh: 20px;
+  }
+}
+
+@media (max-width: 375px) {
+  :root {
+    --type-h2-size: 36px;
+    --type-h2-lh: 40px;
+  }
+}
+
+@media (max-width: 340px) {
+  :root {
+    --type-h2-size: 32px;
+    --type-h2-lh: 36px;
+    --type-role-long-size: 32px;
+    --type-role-long-lh: 36px;
+  }
+}
+
+/* Telefones em paisagem ultrapassam 720px de largura, mas continuam sendo
+   uma experiência mobile: labels e captions preservam o mínimo de 16px. */
+@media (max-width: 960px) and (max-height: 600px) and (orientation: landscape) {
+  :root {
+    --type-nav-size: 16px;
+    --type-nav-lh: 20px;
+    --type-meta-size: 16px;
+    --type-meta-lh: 20px;
+    --type-tag-size: 16px;
+    --type-tag-lh: 20px;
+  }
+}
