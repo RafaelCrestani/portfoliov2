@@ -24,6 +24,7 @@ Será criada em `base.css` a classe neutra `.action-pill`, reutilizada pelos lin
 - seta com `flex: 0 0 auto` e `font: inherit`;
 - em dispositivos com hover, fundo `var(--color-accent)`, texto `var(--color-surface)`, borda `var(--gray-600)` e `translateY(-4px)`;
 - no foco visível, outline de 2 px em `var(--color-accent)` com offset de 4 px;
+- até 960 px, tipografia explícita de 16 px / 20 px para não depender dos tokens desktop e preservar o mínimo mobile;
 - até 520 px, altura mínima de 52 px e padding de 12 px × 16 px, exatamente como os contatos atuais.
 
 As classes existentes continuam no HTML para preservar seus contratos funcionais. `.footer-contact__button` continuará sendo o seletor consultado e animado por `footer.js`; as regras de `will-change` e da timeline permanecem intactas. `.experience__resume-link` continuará controlando largura e encaixe nas versões 960/961. Nenhum seletor JavaScript será renomeado ou removido.
@@ -41,7 +42,7 @@ As classes existentes continuam no HTML para preservar seus contratos funcionais
 
 - O botão permanece no bloco próprio após a trajetória profissional.
 - Ocupa 100% da largura útil.
-- Entre 521 e 960 px, usa exatamente a base de 64 px, padding de 16 px × 20 px e os tokens tipográficos responsivos dos contatos.
+- Entre 521 e 960 px, usa exatamente a base de 64 px, padding de 16 px × 20 px e tipografia de 16/20 px, igual aos contatos.
 - Até 520 px, usa exatamente 52 px, padding de 12 px × 16 px e tipografia responsiva de 16/20 px, igual aos contatos.
 - Respeita área de toque mínima e a regra já adotada de texto não inferior a 14 px.
 
