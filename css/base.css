@@ -50,6 +50,67 @@ a {
   text-decoration: none;
 }
 
+/* Ação editorial compartilhada entre contato e currículo. */
+.action-pill {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: 0;
+  min-height: var(--space-16);
+  padding: var(--space-4) var(--space-5);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  color: var(--color-text);
+  background: rgba(248, 247, 245, 0.9);
+  border: 1px solid var(--gray-500);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-lh);
+  text-transform: uppercase;
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.action-pill span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-pill b {
+  flex: 0 0 auto;
+  font: inherit;
+}
+
+@media (any-hover: hover) and (any-pointer: fine) {
+  .action-pill:hover {
+    color: var(--color-surface);
+    background: var(--color-accent);
+    border-color: var(--gray-600);
+    transform: translateY(-4px);
+  }
+}
+
+.action-pill:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 960px) {
+  .action-pill {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .action-pill {
+    min-height: 52px;
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
 .skip-link {
   position: fixed;
   left: var(--space-4);

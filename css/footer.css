@@ -149,52 +149,12 @@
   gap: var(--space-3);
 }
 
-.footer-contact__button {
-  display: inline-flex;
-  min-width: 0;
-  min-height: var(--space-16);
-  padding: var(--space-4) var(--space-5);
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  color: var(--color-text);
-  background: rgba(248, 247, 245, 0.9);
-  border: 1px solid var(--gray-500);
-  border-radius: 999px;
-  font-family: var(--font-sans);
-  font-size: var(--type-meta-size);
-  line-height: var(--type-meta-lh);
-  text-transform: uppercase;
-  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
-}
-
-.footer-contact__button span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.footer-contact__button b {
-  flex: 0 0 auto;
-  font: inherit;
-}
-
 .footer-contact__button--primary {
   color: var(--color-surface);
   background: var(--color-text);
   border-color: var(--color-text);
 }
 
-@media (any-hover: hover) and (any-pointer: fine) {
-  .footer-contact__button:hover {
-    color: var(--color-surface);
-    background: var(--color-accent);
-    border-color: var(--gray-600);
-    transform: translateY(-4px);
-  }
-}
-
-.footer-contact__button:focus-visible,
 .footer-contact__legal a:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
@@ -343,7 +303,6 @@
   }
 
   .footer-contact__copy,
-  .footer-contact__button,
   .footer-contact__legal {
     font-size: 16px;
     line-height: 20px;
@@ -356,11 +315,6 @@
   .footer-contact__actions {
     grid-template-columns: 1fr;
     gap: var(--space-2);
-  }
-
-  .footer-contact__button {
-    min-height: 52px;
-    padding: var(--space-3) var(--space-4);
   }
 
   .footer-contact__signature-inner {
