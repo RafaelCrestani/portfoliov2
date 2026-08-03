@@ -36,7 +36,7 @@ Esta decisão substitui a escolha anterior de tratar o currículo como ação se
 
 - O currículo permanece abaixo de `Soften`.
 - `.experience__resume-link--rail` controla apenas `width: 100%`; não altera altura, padding ou gap.
-- O wrapper `.experience__resume-rail` se expande 16 px para cada lado dentro do trilho, por meio de margens laterais negativas, para acomodar o componente completo sem truncar o texto em 961 px.
+- O wrapper `.experience__resume-rail` se expande 20 px para cada lado dentro do trilho, por meio de margens laterais negativas, para acomodar o componente completo sem truncar o texto em 961 px.
 - A expansão permanece dentro da área visual da sidebar e não altera sua largura, a posição do divisor ou a área dos cards.
 - O contador continua com pelo menos 48 px de distância vertical do botão em viewport de 961 × 560 px.
 
