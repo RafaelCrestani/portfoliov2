@@ -6,6 +6,14 @@
   var scrollRunning = false;
   var scrollDuration = 800;
 
+  function durationFor(link) {
+    var value = Number(link.getAttribute("data-scroll-duration"));
+
+    return Number.isFinite(value) && value > 0
+      ? value
+      : scrollDuration;
+  }
+
   function easeInOutCubic(progress) {
     return progress < 0.5
       ? 4 * progress * progress * progress
@@ -42,7 +50,7 @@
     }
   }
 
-  function scrollToTarget(target, hash, instant) {
+  function scrollToTarget(target, hash, instant, duration) {
     cancel();
 
     var startTop = window.scrollY;
@@ -62,7 +70,7 @@
       if (!scrollRunning) return;
       if (startTime === null) startTime = timestamp;
 
-      var progress = Math.min(1, (timestamp - startTime) / scrollDuration);
+      var progress = Math.min(1, (timestamp - startTime) / duration);
       var easedProgress = easeInOutCubic(progress);
 
       window.scrollTo(0, startTop + distance * easedProgress);
@@ -122,7 +130,7 @@
         window.matchMedia &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      scrollToTarget(target, hash, instantReduced);
+      scrollToTarget(target, hash, instantReduced, durationFor(link));
     });
 
     ["wheel", "touchstart", "pointerdown"].forEach(function (eventName) {
