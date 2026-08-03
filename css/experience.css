@@ -173,6 +173,65 @@
   outline-offset: 5px;
 }
 
+.experience__index li:last-child a {
+  margin-bottom: 0;
+}
+
+.experience__resume-rail {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--gray-300);
+}
+
+.experience__resume-link {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  min-height: var(--space-12);
+  padding: var(--space-3) var(--space-2);
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--gray-400);
+  font-family: var(--font-sans);
+  font-size: var(--type-nav-size);
+  line-height: var(--type-nav-lh);
+  text-transform: uppercase;
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.experience__resume-link--rail {
+  width: 100%;
+}
+
+.experience__resume-link span {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.experience__resume-link b {
+  flex: 0 0 auto;
+  font: inherit;
+}
+
+.experience__resume-mobile {
+  display: none;
+}
+
+@media (any-hover: hover) and (any-pointer: fine) {
+  .experience__resume-link:hover {
+    color: var(--color-background);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+}
+
+.experience__resume-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
 .experience__rail-count {
   left: var(--experience-pad);
 }
@@ -341,6 +400,20 @@ html.experience-motion-pending--soften [data-experience-motion-group="soften"] [
     display: none;
   }
 
+  .experience__resume-mobile {
+    display: block;
+    padding: var(--space-8) clamp(20px, 6vw, 52px);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .experience__resume-mobile .experience__resume-link {
+    width: 100%;
+    min-height: var(--space-14);
+    padding: var(--space-4) var(--space-5);
+    font-size: 16px;
+    line-height: 20px;
+  }
+
   .experience__mobile-progress {
     --experience-progress: 0.2;
 
@@ -423,6 +496,31 @@ html.experience-motion-pending--soften [data-experience-motion-group="soften"] [
     text-align: right;
   }
 
+}
+
+@media (min-width: 961px) and (max-height: 720px) {
+  .experience__rail {
+    padding-block: var(--space-6);
+  }
+
+  .experience__index {
+    margin-top: var(--space-6);
+  }
+
+  .experience__resume-rail {
+    padding-top: var(--space-3);
+  }
+
+  .experience__rail-count {
+    bottom: var(--space-6);
+  }
+}
+
+@media (min-width: 961px) and (max-width: 1040px) {
+  .experience__resume-link--rail {
+    gap: 0;
+    padding-inline: var(--space-1);
+  }
 }
 
 @media (max-height: 600px) and (orientation: landscape) and (max-width: 960px) {

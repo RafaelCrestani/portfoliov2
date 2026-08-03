@@ -20,6 +20,7 @@ Disponibilizar o currículo de Rafael diretamente na seção Experiência, com u
 - O botão não receberá marcador quadrado; assim, não parecerá um sexto capítulo.
 - O botão terá `box-sizing: border-box`, largura total do conteúdo útil do rail, altura mínima de `48 px`, `padding: 12px 8px`, `gap: 4px`, fundo transparente, borda cinza e tipografia Satoshi em caixa alta com `font-size: var(--type-nav-size)` e `line-height: var(--type-nav-lh)`.
 - O texto usará `white-space: nowrap`; o ícone ficará em um item flex sem encolhimento. Essa composição deve caber nos aproximadamente `115 px` úteis do rail em `961 px`.
+- Entre `961 px` e `1040 px`, o padding horizontal do CTA será reduzido para `4 px` e o gap para `0`, preservando a fonte de `12 px` e evitando qualquer quebra na largura mínima do rail.
 - Em hover com mouse, fundo e borda passam ao vermelho de destaque, o texto fica claro e o botão sobe `2 px`.
 - O foco por teclado terá outline vermelho visível e independente do hover.
 - Em `@media (min-width: 961px) and (max-height: 720px)`, o rail usará `padding-block: 24px`, o índice usará `margin-top: 24px`, o wrapper do currículo usará `padding-top: 12px`, o botão continuará com `min-height: 48px` e o contador usará `bottom: 24px`. Os links e o botão mantêm sua área interativa de `48 px`; somente os espaços externos são compactados.
