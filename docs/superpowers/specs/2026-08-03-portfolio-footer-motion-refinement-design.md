@@ -29,7 +29,7 @@ Ficam fora do escopo:
 ### Frase principal
 
 - A frase continua sendo “VAMOS CONVERSAR?”.
-- Ao iniciar a área pinada, aproximadamente 30% da largura real da frase já está visível.
+- Ao iniciar a área pinada, entre 25% e 35% da largura real da frase já intersecta a viewport e seus glifos estão perceptíveis.
 - A posição inicial é calculada com base em `track.scrollWidth`: `viewportWidth - trackWidth * 0.30`, limitada para evitar posicionamento inadequado em telas muito estreitas.
 - A frase permanece em uma linha na versão aprimorada.
 
@@ -39,6 +39,8 @@ O texto semântico do título permanece íntegro para tecnologias assistivas. O 
 
 Cada caractere visual usa uma classe própria e um índice CSS/JS para o stagger. A versão estática sem JavaScript continua exibindo o texto completo, sem depender dos caracteres animados para leitura.
 
+O texto de apoio recebe um wrapper neutro `.footer-contact__copy-mask`, com `overflow: hidden`. O `<p>` continua semanticamente íntegro; somente o `<p>` é animado em opacidade e deslocamento. O wrapper mantém padding vertical mínimo de 4 px para não recortar ascendentes, descendentes ou acentos.
+
 ## Coreografia
 
 ### 1. Entrada do painel
@@ -47,8 +49,8 @@ O painel mantém a subida curta já existente, porém sem arredondamento. A entr
 
 ### 2. Cascata tipográfica
 
-- Todos os caracteres participam da animação, inclusive os que formam os 30% inicialmente visíveis.
-- Cada caractere começa acima da linha de base, com `autoAlpha: 0` e deslocamento vertical curto.
+- Em movimento normal, todos os caracteres participam da sequência em cascata, inclusive os que formam os 30% inicialmente visíveis. Em movimento reduzido, todos participam da queda curta simultaneamente, sem stagger.
+- Cada caractere começa acima da linha de base, com deslocamento vertical curto. Os caracteres que intersectam a viewport iniciam com `autoAlpha` suficiente para serem perceptíveis, aproximadamente `0.30`; assim os 25%–35% da frase são de fato visíveis desde o começo, embora ainda estejam caindo. A opacidade chega a `1` junto com o assentamento na linha de base.
 - A entrada usa easing suave, com stagger pequeno e progressivo da esquerda para a direita.
 - A queda ocupa somente o início da timeline. Quando termina, todos os caracteres permanecem alinhados e a frase continua a travessia como uma unidade.
 - A travessia horizontal começa junto da cascata, mas é longa e linear, controlada pelo scroll.
@@ -59,7 +61,8 @@ O painel mantém a subida curta já existente, porém sem arredondamento. A entr
 - A entrada começa somente quando a frase já saiu visualmente da área útil.
 - O texto de apoio entra com opacidade, deslocamento vertical curto e máscara vertical que se abre de baixo para cima.
 - Os quatro botões entram depois do texto, com opacidade, subida curta e stagger sutil da esquerda para a direita.
-- A liberação de `inert` e `aria-hidden` acompanha o momento em que os controles já estão suficientemente visíveis e interativos.
+- A liberação de `inert` e `aria-hidden` usa um marco nomeado e reversível da timeline, `actionsReady`, colocado somente depois que a entrada do último botão atingir opacidade perceptível. O `onUpdate` compara `timeline.time()` com `timeline.labels.actionsReady`, evitando um número de progresso arbitrário. Antes desse marco, os atributos permanecem aplicados; ao cruzá-lo em sentido reverso, são reaplicados.
+- Se o foco estiver dentro do bloco de contatos ao cruzar `actionsReady` em sentido reverso, o ancestral não é ocultado imediatamente. Em `focusout`, o código verifica `event.relatedTarget`: se o novo foco continuar dentro de `.footer-contact__reveal`, nada muda. Se estiver fora, o estado é sincronizado no próximo `requestAnimationFrame`. O código nunca aplica `aria-hidden` a um ancestral do elemento focado.
 
 ## Timeline GSAP
 
@@ -71,7 +74,8 @@ Ordem relativa recomendada:
 2. cascata de caracteres: início próximo de `0.04`, término antes de `0.24`;
 3. travessia horizontal: início próximo de `0.08`, término próximo de `0.72`;
 4. texto de apoio: início após `0.78`;
-5. botões: início após o texto, próximo de `0.82`.
+5. botões: início após o texto, próximo de `0.82`;
+6. label `actionsReady`: depois que o quarto botão já iniciou e atingiu opacidade perceptível.
 
 Os valores finais podem ser calibrados visualmente, mas a ordem não deve mudar. O deslocamento horizontal continua derivado de funções invalidadas em `ScrollTrigger.refresh()`.
 
@@ -85,10 +89,18 @@ Os valores finais podem ser calibrados visualmente, mas a ordem não deve mudar.
 
 ## Movimento reduzido e fallback
 
-- Com `prefers-reduced-motion: reduce`, a mesma narrativa permanece reconhecível, mas a queda usa menor distância e não aplica atraso excessivo.
+- Com `prefers-reduced-motion: reduce`, a mesma narrativa permanece reconhecível, mas a queda usa menor distância, `stagger: 0` e `ease: "none"`. Travessia, texto e botões também usam `ease: "none"`, sem inércia.
 - A travessia horizontal continua ligada ao scroll porque ela é a interação principal aprovada pelo usuário.
 - Sem GSAP, ScrollTrigger ou JavaScript, o footer volta ao estado estático: frase completa, texto e contatos visíveis e utilizáveis.
 - O link “Pular animação e acessar contatos” continua levando ao fim da timeline e focando o primeiro canal de contato.
+
+## Reconstrução e teardown
+
+- A divisão em caracteres acontece uma única vez e é identificada por um atributo de estado no título; rebuilds de `gsap.matchMedia()`, resize, `pageshow` e `ScrollTrigger.refresh()` reutilizam os spans existentes.
+- A função de cleanup mata a timeline e tweens associados antes de limpar estilos inline.
+- O teardown remove `transform`, `opacity`, `visibility` e `will-change` de painel, track, caracteres, texto e botões.
+- O fallback remove o estado aprimorado, restaura a frase completa, deixa texto e contatos visíveis e devolve interatividade.
+- Uma falha parcial durante a criação da timeline chama o mesmo cleanup, evitando spans duplicados ou controles permanentemente inertes.
 
 ## Acessibilidade
 
@@ -102,7 +114,7 @@ Os valores finais podem ser calibrados visualmente, mas a ordem não deve mudar.
 
 ### Funcional
 
-- A seção inicia com cerca de 30% da frase visível.
+- A seção inicia com 25%–35% da largura real da frase dentro da viewport e perceptível antes de deslocamento horizontal relevante.
 - Todos os caracteres caem em sequência curta e se estabilizam na linha de base.
 - A frase atravessa a tela sem saltos durante resize ou refresh.
 - O texto de apoio e os botões entram somente após a saída da frase.
@@ -127,4 +139,3 @@ Checar também corte reto, ausência de overflow documental, acentos sem recorte
 - `ScrollTrigger.refresh()` mantém posição e medidas corretas;
 - acesso direto e recarga em `#contato` e `#contato-acoes` permanecem funcionais;
 - fallback validado com as bibliotecas GSAP indisponíveis.
-
