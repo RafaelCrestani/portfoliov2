@@ -222,7 +222,7 @@
     setActionsInteractive(false);
     footer.classList.add("footer-contact--enhanced");
 
-    gsap.set(panel, { yPercent: reduced ? 0 : 8 });
+    gsap.set(panel, { yPercent: reduced ? 0 : 3 });
     gsap.set(track, { x: getTrackStart(), yPercent: -50 });
     gsap.set(characters, {
       autoAlpha: 0.3,

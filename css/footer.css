@@ -8,7 +8,7 @@
   z-index: 2;
   overflow: clip;
   color: var(--color-text);
-  background: var(--color-text);
+  background: var(--color-background);
 }
 
 .footer-contact__skip {
@@ -49,7 +49,7 @@
   min-height: 100vh;
   min-height: 100svh;
   overflow: hidden;
-  background: var(--color-text);
+  background: var(--color-background);
 }
 
 .footer-contact__panel {
