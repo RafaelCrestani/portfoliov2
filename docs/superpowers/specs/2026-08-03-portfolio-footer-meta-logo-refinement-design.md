@@ -6,18 +6,18 @@ Reduzir o ruído visual do encerramento do portfólio e reforçar a hierarquia e
 
 ## Decisões aprovadas
 
-- A identificação `04 / CONTATO` passa do vermelho para o preto usado nos demais metadados editoriais.
+- A identificação `04 / CONTATO` passa do vermelho para `var(--color-text)`, herdando o preto usado nos demais metadados editoriais. A regra específica que aplica `var(--color-accent)` ao primeiro item deve ser removida, sem introduzir preto literal ou um seletor compensatório.
 - O texto `RAFAEL NASSIF · PRODUCT DESIGNER`, atualmente posicionado à direita do cabeçalho do painel, é removido integralmente.
 - A assinatura `NASSIF` permanece alinhada à esquerda no rodapé final, mas sua largura máxima no desktop cai de 780 px para 520 px.
 - Em telas menores, a assinatura reduz proporcionalmente e nunca ultrapassa a largura disponível.
-- O bloco legal e o link `Voltar ao topo` permanecem à direita, mantendo a composição assimétrica atual.
+- No desktop, o bloco legal e o link `Voltar ao topo` permanecem à direita, mantendo a composição assimétrica atual.
 
 ## Comportamento responsivo
 
-- Desktop: largura máxima de 520 px para a assinatura.
-- Tablet e mobile: largura fluida limitada a 420 px, com folga lateral preservada.
-- Mobile estreito: largura máxima visual de aproximadamente 300 px para evitar competição com o bloco legal.
-- Mobile em paisagem: largura limitada a 320 px para preservar a altura útil.
+- Acima de 960 px: `width: min(64vw, 520px)`.
+- Até 960 px: `width: min(100%, 420px)` e preservação do empilhamento atual entre assinatura e bloco legal.
+- Até 520 px: `width: min(100%, 300px)` para evitar competição visual com o bloco legal.
+- Em paisagem baixa: `width: min(56vw, 320px)` e preservação das duas colunas já existentes.
 
 ## Fora de escopo
 
