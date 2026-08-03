@@ -79,7 +79,13 @@
 }
 
 .about__metric-plus {
+  display: inline-block;
+  margin-left: 0.04em;
   opacity: 1;
+  font-size: 0.64em;
+  line-height: 1;
+  letter-spacing: 0;
+  vertical-align: 0.12em;
   transition: opacity 160ms ease-out;
 }
 
@@ -475,7 +481,6 @@
 
   .about__metric-label {
     width: auto;
-    margin-top: var(--space-6);
     margin-left: var(--space-2);
   }
 
@@ -537,5 +542,11 @@
   .about__chapter-copy {
     gap: var(--space-8);
     margin-top: var(--space-12);
+  }
+}
+
+@media (max-width: 520px) {
+  .about__metric-label {
+    margin-top: var(--space-6);
   }
 }
