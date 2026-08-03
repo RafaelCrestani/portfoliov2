@@ -164,10 +164,10 @@
 .footer-contact__signature-inner {
   display: grid;
   width: min(100%, var(--layout-max));
-  min-height: 62vh;
-  min-height: 62svh;
+  min-height: 44vh;
+  min-height: 44svh;
   margin: 0 auto;
-  padding: var(--space-16) clamp(var(--space-5), 4vw, var(--space-16)) max(var(--space-8), env(safe-area-inset-bottom));
+  padding: var(--space-8) clamp(var(--space-5), 4vw, var(--space-16)) max(var(--space-8), env(safe-area-inset-bottom));
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: var(--space-8);

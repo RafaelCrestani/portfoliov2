@@ -182,7 +182,7 @@
   }
 
   function getScrollDistance(conditions) {
-    var multiplier = conditions.mobile ? 1.5 : conditions.tablet ? 1.9 : 2.3;
+    var multiplier = conditions.mobile ? 1 : conditions.tablet ? 1.2 : 1.4;
     return Math.max(1, Math.round(window.innerHeight * multiplier));
   }
 
@@ -201,9 +201,9 @@
 
   function getCharacterDrop(conditions) {
     if (conditions.reduceMotion) return 12;
-    if (conditions.mobile) return 28;
-    if (conditions.tablet) return 40;
-    return 56;
+    if (conditions.mobile) return 20;
+    if (conditions.tablet) return 28;
+    return 36;
   }
 
   function buildTimeline(context) {
@@ -213,10 +213,10 @@
     var characters = preparePromptCharacters();
     var localTimeline = null;
     var characterStagger = reduced ? 0 : conditions.mobile ? 0.005 : 0.007;
-    var characterDuration = reduced ? 0.1 : 0.12;
+    var characterDuration = reduced ? 0.1 : 0.16;
     var buttonStagger = reduced ? 0 : 0.018;
     var buttonDuration = reduced ? 0.12 : 0.12;
-    var buttonStart = 0.82;
+    var buttonStart = 0.76;
     var actionsReadyTime = buttonStart + buttonStagger * (buttonList.length - 1) + buttonDuration * 0.6;
 
     setActionsInteractive(false);
@@ -245,7 +245,7 @@
         end: function () { return "+=" + getScrollDistance(conditions); },
         pin: stage,
         pinSpacing: true,
-        scrub: reduced ? true : 0.7,
+        scrub: reduced ? true : 1,
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: function () {
@@ -285,7 +285,7 @@
         yPercent: 0,
         duration: reduced ? 0.1 : 0.12,
         ease: reduced ? "none" : "power3.out"
-      }, 0.78)
+      }, 0.72)
       .to(buttonList, {
         autoAlpha: 1,
         y: 0,
