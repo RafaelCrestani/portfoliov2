@@ -61,7 +61,6 @@
   justify-content: space-between;
   overflow: hidden;
   background: var(--color-background);
-  border-radius: 32px 32px 0 0;
 }
 
 .footer-contact__meta {
@@ -98,14 +97,29 @@
   text-transform: uppercase;
 }
 
-.footer-contact__prompt span,
-.footer-contact__prompt em {
+.footer-contact__prompt > span,
+.footer-contact__prompt > em {
   display: block;
   font-style: normal;
 }
 
-.footer-contact__prompt em {
+.footer-contact__prompt > em,
+.footer-contact__char--accent {
   color: var(--color-accent);
+}
+
+.footer-contact__prompt-visual {
+  display: block;
+  white-space: inherit;
+}
+
+.footer-contact__char {
+  display: inline-block;
+  font-style: normal;
+}
+
+.footer-contact__char--space {
+  width: 0.3em;
 }
 
 .footer-contact__reveal {
@@ -125,6 +139,11 @@
   font-family: var(--font-sans);
   font-size: var(--type-body-sm-size);
   line-height: var(--type-body-sm-lh);
+}
+
+.footer-contact__copy-mask {
+  overflow: hidden;
+  padding-block: var(--space-1);
 }
 
 .footer-contact__actions {
@@ -190,7 +209,6 @@
   z-index: 2;
   color: var(--color-text);
   background: var(--color-background);
-  border-radius: 0 0 32px 32px;
 }
 
 .footer-contact__signature-inner {
@@ -238,6 +256,7 @@
 
 .footer-contact--enhanced .footer-contact__panel,
 .footer-contact--enhanced .footer-contact__track,
+.footer-contact--enhanced .footer-contact__char,
 .footer-contact--enhanced .footer-contact__copy,
 .footer-contact--enhanced .footer-contact__button {
   will-change: transform, opacity;
@@ -257,13 +276,13 @@
   white-space: nowrap;
 }
 
-.footer-contact--enhanced .footer-contact__prompt span,
-.footer-contact--enhanced .footer-contact__prompt em {
+.footer-contact--enhanced .footer-contact__prompt > span,
+.footer-contact--enhanced .footer-contact__prompt > em,
+.footer-contact--enhanced .footer-contact__prompt-visual {
   display: inline;
 }
 
 .footer-contact--enhanced .footer-contact__reveal[inert] {
-  visibility: hidden;
   pointer-events: none;
 }
 
@@ -283,15 +302,6 @@
 }
 
 @media (max-width: 960px) {
-  .footer-contact__panel,
-  .footer-contact__signature {
-    border-radius: 24px 24px 0 0;
-  }
-
-  .footer-contact__signature {
-    border-radius: 0 0 24px 24px;
-  }
-
   .footer-contact__prompt {
     font-size: clamp(56px, 14vw, 96px);
   }
@@ -322,11 +332,6 @@
 @media (max-width: 520px) {
   .footer-contact__panel {
     padding: max(var(--space-6), env(safe-area-inset-top)) var(--space-5) max(var(--space-6), env(safe-area-inset-bottom));
-    border-radius: 20px 20px 0 0;
-  }
-
-  .footer-contact__signature {
-    border-radius: 0 0 20px 20px;
   }
 
   .footer-contact__meta span:last-child {
