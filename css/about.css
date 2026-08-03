@@ -59,7 +59,7 @@
   font-size: var(--type-display-metric-size);
   line-height: var(--type-display-metric-lh);
   font-weight: 400;
-  letter-spacing: -0.13em;
+  letter-spacing: 0;
 }
 
 .about__metric-label {
