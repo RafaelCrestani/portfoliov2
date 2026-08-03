@@ -18,9 +18,9 @@ Tornar a sequência “Vamos conversar?” mais suave e contemplativa, reduzindo
 
 ### Distância de rolagem
 
-- Desktop: de 2,3 alturas de viewport para 1,4.
-- Tablet: de 1,9 para 1,2.
-- Mobile: de 1,5 para 1,0.
+- Desktop (`>= 1024px`): de 2,3 alturas de viewport para 1,4.
+- Tablet (`521px–1023px`): de 1,9 para 1,2.
+- Mobile (`<= 520px`): de 1,5 para 1,0.
 
 ### Suavização
 
@@ -39,14 +39,15 @@ Tornar a sequência “Vamos conversar?” mais suave e contemplativa, reduzindo
 
 ## Acessibilidade
 
-- `prefers-reduced-motion` continua respeitado.
+- `prefers-reduced-motion` continua usando a timeline abreviada existente, sem stagger e com deslocamentos mínimos; esta mudança não transforma a seção em uma composição estática.
 - O botão de pular animação continua levando diretamente aos contatos.
 - A disponibilidade de foco dos botões continua sincronizada com a revelação visual.
 
 ## Validação
 
 - Conferir o percurso completo em 1280×912, 1024×768, 960×720, 390×844 e 320×568.
+- Conferir também as transições exatas dos breakpoints em 520/521px e 1023/1024px.
 - Confirmar que a frase cruza integralmente a tela e os botões aparecem antes do fim da sequência.
 - Confirmar ausência de faixa, salto ou conteúdo vazio durante o pin.
 - Confirmar que a assinatura final ocupa menos altura, sem colisões entre logo e bloco legal.
-- Confirmar comportamento estático e acessível com movimento reduzido.
+- Confirmar que a timeline abreviada de movimento reduzido não usa stagger, mantém deslocamentos mínimos e libera os contatos corretamente.
