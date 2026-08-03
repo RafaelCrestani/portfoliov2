@@ -179,14 +179,12 @@
 
 .experience__resume-rail {
   padding-top: var(--space-6);
+  margin-inline: calc(var(--space-5) * -1);
   border-top: 1px solid var(--gray-300);
 }
 
 .experience__resume-link--rail {
   width: 100%;
-  min-height: var(--space-12);
-  padding: var(--space-3) var(--space-2);
-  gap: var(--space-1);
 }
 
 .experience__resume-mobile {
